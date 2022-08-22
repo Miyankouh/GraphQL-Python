@@ -132,5 +132,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # graphene 
 GRAPHENE = {
-    "SCHEMA": "schema.schema"
+    "SCHEMA": "A.schema.schema"
 }
