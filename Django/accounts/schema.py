@@ -1,4 +1,6 @@
 import graphene
+import graphql_jwt
+from graphql_jwt.decorators import login_required
 from graphene_django.types import DjangoObjectType, ObjectType
 from django.contrib.auth.models import User
 
@@ -11,6 +13,7 @@ class UserType(DjangoObjectType):
 class AccountsQuery(ObjectType):
     user = graphene.Field(UserType, id=graphene.ID())
 
+    @login_required
     def resolve_user(parent, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
@@ -40,3 +43,10 @@ class CreateUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+
+
+
+# "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InF3IiwiZXhwIjoxNjYxMjc0OTU3LCJvcmlnSWF0IjoxNjYxMjc0NjU3fQ.TAZd8Pjnso0EE66MSPujBmaxYnucQ3vL5nux9C7ly5c"
